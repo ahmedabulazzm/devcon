@@ -76,7 +76,7 @@ router.post("/login", (req, res) => {
 });
 
 // Access Current User
-// /api/users/currentuser
+// /api/users/current
 // Access: Private! -- Use JWT authentication
 router.get(
   "/current",

@@ -1,0 +1,1 @@
+DevCon stands for Developer Connect. DevCon is a social network website designed for software Developers.
