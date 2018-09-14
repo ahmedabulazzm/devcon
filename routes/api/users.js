@@ -7,13 +7,22 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 const User = require("../../models/User");
+const validateRegisterInput = require("../../validation/regvalid");
+const validateLoginInput = require("../../validation/loginvalid");
 
 router.get("/test/", (req, res) => res.json({ msg: "Users works" }));
 
 router.post("/register", (req, res) => {
+  const { isValid, errors } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      res.status(400).json({ email: "E-Mail already in use" });
+      errors.email = "E-Mail already exists";
+      res.status(400).json(errors);
     } else {
       const avatar = gravatar.url(req.body.email, {
         s: "200", //size
@@ -43,16 +52,24 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
+  const { isValid, errors } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const { email, password } = req.body;
 
   User.findOne({ email }).then(user => {
     if (!user) {
-      return res.status(404).json({ email: "User not found!" });
+      errors.email = "User not found!";
+      return res.status(404).json(errors);
     } else {
       // Validate Password
       bcrypt.compare(password, user.password).then(isMatch => {
         if (!isMatch) {
-          return res.status(400).json({ password: "Invalid Password!" });
+          errors.password = "Password Incorrect!";
+          return res.status(400).json(errors);
         } else {
           // User Matched
           const payload = { id: user.id, name: user.name, avatar: user.avatar };
