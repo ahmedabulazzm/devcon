@@ -31,6 +31,59 @@ router.get(
   }
 );
 
+// Get all profiles
+router.get("/all", (req, res) => {
+  const errors = {};
+
+  ProfileModel.find()
+    .populate("user", ["name", "avatar"])
+    .then(profiles => {
+      if (!profiles) {
+        errors.noprofiles = "There is no profiles";
+        return res.status(404).json(errors);
+      } else {
+        return res.json(profiles);
+      }
+    })
+    .catch(err => res.status(400).json({ profiles: "There is no profiles" }));
+});
+
+// Get user profile by handle
+router.get("/handle/:handle", (req, res) => {
+  const errors = {};
+
+  ProfileModel.findOne({ handle: req.params.handle })
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noprofile = "There is no profile for this user";
+        res.status(404).json(errors);
+      } else {
+        res.json(profile);
+      }
+    })
+    .catch(err => res.status(400).json(err));
+});
+
+// Get user profile by ID
+router.get("/user/:user_id", (req, res) => {
+  const errors = {};
+
+  ProfileModel.findOne({ user: req.params.user_id })
+    .populate("user", ["name", "avatar"])
+    .then(profile => {
+      if (!profile) {
+        errors.noprofile = "There is no profile for this user";
+        return res.status(404).json(errors);
+      } else {
+        return res.json(profile);
+      }
+    })
+    .catch(err =>
+      res.status(400).json({ profile: "There is no profile for this user" })
+    );
+});
+
 // Create OR Edit Profile
 // Private
 router.post(
