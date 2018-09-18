@@ -217,4 +217,24 @@ router.post(
   }
 );
 
+// DELETE experience
+// Private Route
+router.delete(
+  "/experience/:exp_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    ProfileModel.findOne({ user: req.user.id })
+      .then(profile => {
+        // Get the index to be removed
+        const removeIndex = profile.experience
+          .map(item => item.id)
+          .indexOf(req.params.exp_id);
+
+        profile.experience.splice(removeIndex, 1);
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(400).json(err));
+  }
+);
+
 module.exports = router;
