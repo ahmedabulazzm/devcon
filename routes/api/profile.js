@@ -205,6 +205,9 @@ router.post(
         description: req.body.description
       };
 
+      if (profile.education.length > 0) {
+        profile.education = [];
+      }
       profile.education.unshift(newEdu);
       profile
         .save()
