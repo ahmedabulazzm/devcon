@@ -7,6 +7,8 @@ const passport = require("passport");
 const ProfileModel = require("../../models/ProfileModel");
 const User = require("../../models/User");
 const validateProfileInput = require("../../validation/profilevalid");
+const validateExperienceInput = require("../../validation/experiencevalid");
+const validateEducationInput = require("../../validation/educationvalid");
 
 router.get("/test", (req, res) => res.json({ msg: "Profile Works!" }));
 
@@ -142,6 +144,72 @@ router.post(
             .then(profile => res.json(profile));
         });
       }
+    });
+  }
+);
+
+// Add Experience to Profile
+// api/profile/experience
+// Private route
+router.post(
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    ProfileModel.findOne({ user: req.user.id }).then(profile => {
+      const newExp = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      };
+
+      // Add to experience array in Profile
+      profile.experience.unshift(newExp);
+      profile
+        .save()
+        .then(profile => res.json(profile))
+        .catch(err => res.status(400).json(err));
+    });
+  }
+);
+
+// Add profile Education
+// api/profile/education
+// Private
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateEducationInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    ProfileModel.findOne({ user: req.user.id }).then(profile => {
+      const newEdu = {
+        school: req.body.school,
+        degree: req.body.degree,
+        major: req.body.major,
+        from: req.body.from,
+        to: req.body.to,
+        description: req.body.description
+      };
+
+      profile.education.unshift(newEdu);
+      profile
+        .save()
+        .then(profile => res.json(profile))
+        .catch(err => res.status(400).json(err));
     });
   }
 );
