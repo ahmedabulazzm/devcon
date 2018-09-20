@@ -76,4 +76,61 @@ router.delete(
   }
 );
 
+// Post LIKE route
+// api/posts/like/:id <= id is the ID of the post that's being liked
+// Private
+router.post(
+  "/like/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    ProfileModel.findOne({ user: req.user.id }).then(profile => {
+      PostsModel.findById(req.params.id)
+        .then(post => {
+          if (
+            post.likes.filter(like => like.user.toString() === req.user.id)
+              .length > 0
+          ) {
+            return res.status(400).json({ alreadyliked: "Post already liked" });
+          }
+
+          // Add user ID to likes.user
+          post.likes.unshift({ user: req.user.id });
+          post.save().then(post => res.json(post));
+        })
+        .catch(err => res.status(404).json({ postnotfound: "Post not found" }));
+    });
+  }
+);
+
+// Remove/Delete Like
+// Private
+router.post(
+  "/unlike/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    ProfileModel.findOne({ user: req.user.id }).then(profile => {
+      PostsModel.findById(req.params.id)
+        .then(post => {
+          if (
+            post.likes.filter(like => like.user.toString() === req.user.id)
+              .length === 0
+          ) {
+            return res.status(400).json({
+              notlikedifp: "Post hasn't been liked in the first place"
+            });
+          }
+
+          // Get the index to be removed
+          const removeIndex = post.likes
+            .map(item => item.user.toString())
+            .indexOf(req.user.id);
+
+          post.likes.splice(removeIndex, 1);
+          post.save().then(post => res.json(post));
+        })
+        .catch(err => res.status(404).json({ postnotfound: "Post not found" }));
+    });
+  }
+);
+
 module.exports = router;
