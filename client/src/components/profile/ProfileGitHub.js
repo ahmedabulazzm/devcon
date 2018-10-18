@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-class ProfileGitHub extends Component {
+class ProfileGithub extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clientID: "f5f92b48aeb57850bd26",
-      clientSecret: "dafd53edfd163583736ae94f974b47e92e7ad2ba",
+      clientId: '26c196bacea7db10cf48',
+      clientSecret: '0885cb690e07d2a93a6afb0891fb552fd9f7aa53',
       count: 5,
-      sort: "created: asc",
+      sort: 'created: asc',
       repos: []
     };
   }
 
   componentDidMount() {
     const { username } = this.props;
-    const { count, sort, clientID, clientSecret } = this.state;
+    const { count, sort, clientId, clientSecret } = this.state;
 
     fetch(
-      `https://api.github.com/users/${username}/repos?per_page=${count}&sort=${sort}&client_id=${clientID}&client_secret=${clientSecret}`
+      `https://api.github.com/users/${username}/repos?per_page=${count}&sort=${sort}&client_id=${clientId}&client_secret=${clientSecret}`
     )
       .then(res => res.json())
       .then(data => {
@@ -58,7 +58,6 @@ class ProfileGitHub extends Component {
         </div>
       </div>
     ));
-
     return (
       <div ref="myRef">
         <hr />
@@ -69,8 +68,8 @@ class ProfileGitHub extends Component {
   }
 }
 
-ProfileGitHub.propTypes = {
+ProfileGithub.propTypes = {
   username: PropTypes.string.isRequired
 };
 
-export default ProfileGitHub;
+export default ProfileGithub;

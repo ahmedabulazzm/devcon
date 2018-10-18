@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import isEmpty from "../../validation/is-Empty";
-import { Link } from "react-router-dom";
 
 class ProfileHeader extends Component {
   render() {
@@ -30,58 +29,63 @@ class ProfileHeader extends Component {
               {isEmpty(profile.location) ? null : <p>{profile.location}</p>}
               <p>
                 {isEmpty(profile.website) ? null : (
-                  <Link
+                  <a
                     className="text-white p-2"
-                    to={profile.website}
+                    href={profile.website}
                     target="_blank"
                   >
                     <i className="fas fa-globe fa-2x" />
-                  </Link>
+                  </a>
                 )}
+
                 {isEmpty(profile.social && profile.social.twitter) ? null : (
-                  <Link
+                  <a
                     className="text-white p-2"
-                    to={profile.social.twitter}
+                    href={profile.social.twitter}
                     target="_blank"
                   >
                     <i className="fab fa-twitter fa-2x" />
-                  </Link>
+                  </a>
                 )}
-                {isEmpty(profile.social && profile.social.instagram) ? null : (
-                  <Link
-                    className="text-white p-2"
-                    to={profile.social.instagram}
-                    target="_blank"
-                  >
-                    <i className="fab fa-instagram fa-2x" />
-                  </Link>
-                )}
+
                 {isEmpty(profile.social && profile.social.facebook) ? null : (
-                  <Link
+                  <a
                     className="text-white p-2"
-                    to={profile.social.facebook}
+                    href={profile.social.facebook}
                     target="_blank"
                   >
                     <i className="fab fa-facebook fa-2x" />
-                  </Link>
+                  </a>
                 )}
+
                 {isEmpty(profile.social && profile.social.linkedin) ? null : (
-                  <Link
+                  <a
                     className="text-white p-2"
-                    to={profile.social.linkedin}
+                    href={profile.social.linkedin}
                     target="_blank"
                   >
                     <i className="fab fa-linkedin fa-2x" />
-                  </Link>
+                  </a>
                 )}
+
                 {isEmpty(profile.social && profile.social.youtube) ? null : (
-                  <Link
+                  <a
                     className="text-white p-2"
-                    to={profile.social.youtube}
+                    href={profile.social.youtube}
                     target="_blank"
                   >
                     <i className="fab fa-youtube fa-2x" />
-                  </Link>
+                  </a>
+                )}
+
+                {isEmpty(profile.social && profile.social.instagram) ? null : (
+                  <a
+                    className="text-white p-2"
+                    href={profile.social.instagram}
+                    target="_blank"
+                  >
+                    <i className="fab fa-instagram fa-2x" />
+                  </a>
                 )}
               </p>
             </div>

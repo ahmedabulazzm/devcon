@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
-import { clearProfile } from "./actions/profileActions";
+import { clearCurrentProfile } from "./actions/profileActions";
 
 import { Provider } from "react-redux";
 import store from "./store";
@@ -22,8 +22,9 @@ import AddExperience from "./components/add-credentials/AddExperience";
 import AddEducation from "./components/add-credentials/AddEducation";
 import Profiles from "./components/profiles/Profiles";
 import Profile from "./components/profile/Profile";
-import NotFound from "./components/not-found/NotFound";
 import Posts from "./components/posts/Posts";
+import Post from "./components/post/Post";
+import NotFound from "./components/not-found/NotFound";
 
 import "./App.css";
 
@@ -41,8 +42,8 @@ if (localStorage.jwtToken) {
   if (decoded.exp < currentTime) {
     // Logout user
     store.dispatch(logoutUser());
-    // TODO: Clear current Profile
-    store.dispatch(clearProfile());
+    // Clear current Profile
+    store.dispatch(clearCurrentProfile());
     // Redirect to login
     window.location.href = "/login";
   }
@@ -94,6 +95,9 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/feed" component={Posts} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/post/:id" component={Post} />
               </Switch>
               <Route exact path="/not-found" component={NotFound} />
             </div>

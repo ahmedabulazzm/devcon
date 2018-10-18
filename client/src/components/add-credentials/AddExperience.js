@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-import TextFieldGroup from "../common/textFieldGroup";
-import TextAreaFieldGroup from "../common/textAreaFieldGroup";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { addExperience } from "../../actions/profileActions";
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import TextFieldGroup from '../common/TextFieldGroup';
+import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { addExperience } from '../../actions/profileActions';
 
 class AddExperience extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      company: "",
-      title: "",
-      location: "",
-      from: "",
-      to: "",
+      company: '',
+      title: '',
+      location: '',
+      from: '',
+      to: '',
       current: false,
-      description: "",
+      description: '',
       errors: {},
-      disabled: false // It will blackout the -to- field if it's true
+      disabled: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -71,10 +71,10 @@ class AddExperience extends Component {
                 Go Back
               </Link>
               <h1 className="display-4 text-center">Add Experience</h1>
-              <p className="text-lead text-center">
-                Add any job or position you've had in the past or currently
+              <p className="lead text-center">
+                Add any job or position that you have had in the past or current
               </p>
-              <small className="d-block pb-3">* = Required Fields</small>
+              <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
                   placeholder="* Company"
@@ -112,7 +112,7 @@ class AddExperience extends Component {
                   value={this.state.to}
                   onChange={this.onChange}
                   error={errors.to}
-                  disabled={this.state.disabled ? "disabled" : ""}
+                  disabled={this.state.disabled ? 'disabled' : ''}
                 />
                 <div className="form-check mb-4">
                   <input
@@ -134,7 +134,7 @@ class AddExperience extends Component {
                   value={this.state.description}
                   onChange={this.onChange}
                   error={errors.description}
-                  info="Tell us about the position"
+                  info="Tell us about the the position"
                 />
                 <input
                   type="submit"
@@ -161,7 +161,6 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(
-  mapStateToProps,
-  { addExperience }
-)(withRouter(AddExperience));
+export default connect(mapStateToProps, { addExperience })(
+  withRouter(AddExperience)
+);
